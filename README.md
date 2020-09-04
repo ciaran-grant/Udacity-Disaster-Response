@@ -27,7 +27,7 @@ The ETL pipeline follows Extract, Transform, Load (/data/process_data.py).
 - Load clean data to SQL database (data/DisasterResponse.db)
 
 The ML pipeline tokenizes the text data and trains a multiclass random forest classificator (models/train_classifier.py)
-- Tokenisation includes case normalisation, punctuation removal, tokenisation, stop word removal, stemming and lemmatisation.
+- Tokenization includes case normalisation, punctuation removal, tokenisation, stop word removal, stemming and lemmatisation.
 - Random Forest classifier is trained using default hyperparameters (Grid Search is available)
 - Model is saved with pickle (models/classifier.pkl)
 
