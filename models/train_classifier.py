@@ -19,6 +19,18 @@ nltk.download('wordnet')
 import pickle
 
 def load_data(database_filepath):
+    '''
+    Load SQL database as pandas dataframe.
+
+    Args:
+    database_filepath: str, filepath to DisasterResponse.db SQL database
+
+    Returns:
+    X: dataframe, message column of dataframe to be used to generate text features
+    Y: dataframe, category columns o dataframe to be used as multiclass response
+    category_names: list, list of column names referring to category names
+    '''
+    
     # Access sql database
     engine = create_engine('sqlite:///' + database_filepath, pool_pre_ping=True)
     
@@ -35,7 +47,15 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
-        
+    '''
+    Clean and tokenise raw text into tokens.
+
+    Args:
+    text: str, text to be tokenised.
+
+    Returns:
+    tokens: str, case normalised, punctuation removed, tokenised, stop word removed, stemmed and lemmatised text.
+    '''        
     # case normalisation
     text = text.lower()
     
@@ -56,6 +76,15 @@ def tokenize(text):
 
 
 def build_model():
+    '''
+    Run ML pipeline to transform text to features and train multiclass random forest classifier.
+
+    Args:
+
+    Returns:
+    model: RandomForestClassifier, trained from pipline.
+    '''
+    
     # Build pipeline with tokenizer, TF-IDF and MultiClassOutput with RandomForestClassifier
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer = tokenize)),
@@ -77,6 +106,18 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    '''
+    Get test validation metrics for model for each category.
+
+    Args:
+    model: RandomForestClassifier
+    X_test: dataframe, test split of input text messages
+    Y_test: dataframe, test split of response.
+    category_names: list, classes to view validation metrics for.
+
+    Returns:
+
+    '''
     # Get test predictions
     Y_pred = model.predict(X_test)
     
@@ -88,6 +129,17 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    '''
+    Save trained model in specified filepath.
+
+    Args:
+    model: RandomForestClassifier
+    model_filepath: str, filepath of location to save model.
+
+    Returns:
+
+    '''
+    
     # Save classifier model with pickle
     pickle.dump(model, open(model_filepath, 'wb'))
     pass
